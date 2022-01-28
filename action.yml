@@ -1,0 +1,35 @@
+name: 'Zip Release'
+author: 'TheDoctor0'
+branding:
+  icon: 'archive'
+  color: 'yellow'
+description: 'Make an archive from specified files and directories as workflow action'
+inputs:
+  filename:
+    description: 'Filename for archive'
+    required: true
+    default: 'release.zip'
+  path:
+    description: 'Base path for archive files'
+    default: '.'
+  directory:
+    description: 'Working directory before zipping'
+    default: '.'
+  exclusions:
+    description: 'List of excluded files / directories'
+    default: ''
+  type:
+    description: 'Tool to use for archiving'
+    default: 'zip'
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        INPUT_FILENAME: ${{ inputs.filename }}
+        INPUT_PATH: ${{ inputs.path }}
+        INPUT_DIRECTORY: ${{ inputs.directory }}
+        INPUT_EXCLUSIONS: ${{ inputs.exclusions }}
+        INPUT_TYPE: ${{ inputs.type }}
+      run: $GITHUB_ACTION_PATH/entrypoint.sh
+
